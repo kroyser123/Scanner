@@ -25,20 +25,20 @@ func main() {
 
 		// Проверка 1: Пустой ввод
 		if targetDir == "" {
-			fmt.Println("❌ Path cannot be empty")
+			fmt.Println(" Path cannot be empty")
 			continue // ↺ Повторяем запрос
 		}
 
 		// Проверка 2: Существует ли путь
 		info, err := os.Stat(targetDir)
 		if err != nil {
-			fmt.Println("❌ Directory not found:", targetDir)
+			fmt.Println(" Directory not found:", targetDir)
 			continue // ↺ Повторяем запрос
 		}
 
 		// Проверка 3: Является ли путь директорией
 		if !info.IsDir() {
-			fmt.Println("❌ Not a directory:", targetDir)
+			fmt.Println(" Not a directory:", targetDir)
 			continue // ↺ Повторяем запрос
 		}
 
