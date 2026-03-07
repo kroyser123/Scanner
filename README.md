@@ -15,7 +15,7 @@
 
 ## Установка
 
-```bash
+№№ Bash
 git clone https://github.com/yourusername/secret-scanner.git
 cd secret-scanner
 Использование
@@ -159,3 +159,4 @@ secret-scanner/
 │       └── scanner.go         # ядро с Ахо-Корасик
 ├── reports/                   # JSON отчёты для разработчиков
 └── txt/                       # Текстовые отчёты
+
