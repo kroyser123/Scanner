@@ -34,6 +34,7 @@ cd Scanner
 | go run secret_scanner.go -target . -json report.json | Сохранить результат в JSON |
 | go run secret_scanner.go -target . -output txt/report.txt | Сохранить результат в текстовый файл |
 | go run secret_scanner.go -target ./project -level HIGH -json report.json -output txt/report.txt | Все параметры вместе |
+Или просто использовать  go build -o scanner.exe secret_scanner.go
 
 ### Интерактивный режим
 
@@ -79,5 +80,6 @@ go run secret_scanner.go
 | -exclude | Исключенные папки через запятую | -exclude ".git,node_modules" |
 | -json | Путь к файлу для JSON отчёта | -json report.json |
 | -output | Путь к файлу для текстового отчёта | -output txt/report.txt |
+
 
 
