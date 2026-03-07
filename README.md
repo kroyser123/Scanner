@@ -2,153 +2,78 @@
 
 Инструмент для поиска секретов и конфиденциальной информации в коде.
 
+---
+
 ## Возможности
 
-- Быстрый поиск с использованием алгоритма Ахо-Корасик
-- Точная проверка через регулярные выражения
-- Фильтрация ложных срабатываний через энтропию
-- Цветной вывод с уровнями опасности
-- Два режима работы: CLI и интерактивный
-- **Экспорт результатов в два формата:**
-  - `reports/` — JSON для разработчиков и интеграций
-  - `txt/` — читаемый текстовый формат с результатами
+- **Быстрый поиск** с использованием алгоритма Ахо-Корасик
+- **Точная проверка** через регулярные выражения
+- **Фильтрация ложных срабатываний** через энтропию
+- **Два режима работы**: CLI и интерактивный
+- **Экспорт результатов** в JSON и текстовые отчёты
+
+---
 
 ## Установка
 
-№№ Bash
-git clone https://github.com/yourusername/secret-scanner.git
-cd secret-scanner
-Использование
-Режим командной строки
-bash
-# Сканировать конкретную папку
-go run main.go -target ./project
+Bash
+git clone https://github.com/kroyser123/Scanner.git
+cd Scanner
 
-# Только HIGH уровень
-go run main.go -target . -level HIGH
+---
 
-# Исключить папки
-go run main.go -target . -exclude ".git,node_modules,vendor"
+## Использование
 
-# Сохранить результат в JSON
-go run main.go -target . -json result.json
+### Режим командной строки
 
-# Все параметры вместе
-go run main.go -target ./project -level HIGH -json report.json
-Интерактивный режим
-bash
-go run main.go
+| Команда | Описание |
+|---------|----------|
+| go run secret_scanner.go -target ./project | Сканировать конкретную папку |
+| go run secret_scanner.go -target . -level HIGH | Только HIGH уровень |
+| go run secret_scanner.go -target . -exclude ".git,node_modules,vendor" | Исключить папки |
+| go run secret_scanner.go -target . -json report.json | Сохранить результат в JSON |
+| go run secret_scanner.go -target . -output txt/report.txt | Сохранить результат в текстовый файл |
+| go run secret_scanner.go -target ./project -level HIGH -json report.json -output txt/report.txt | Все параметры вместе |
+
+### Интерактивный режим
+
+Bash
+go run secret_scanner.go
+
 Программа последовательно запросит:
+- Путь для сканирования
+- Путь для текстового отчёта (опционально)
+- Путь для JSON отчёта (опционально)
+- Подтверждение запуска
 
-Путь для сканирования
+Результаты сохраняются в указанные вами файлы.
 
-Сохранение в JSON (опционально)
+---
 
-Имя файла для сохранения
+## Уровни опасности
 
-Подтверждение запуска
+| Уровень | Описание |
+|---------|----------|
+| HIGH | Критические секреты (доступ к деньгам/серверам) |
+| MEDIUM | API ключи, вебхуки |
+| LOW | Тестовые данные, локальные ключи |
+| NO_THREAT | Публичные ключи, примеры |
 
-Результаты сохраняются автоматически:
+---
 
-📁 reports/ — JSON файлы для разработчиков
+## Как это работает
 
-📁 txt/ — текстовые отчёты с результатами
+1. **Ахо-Корасик** — находит все ключевые слова за один проход по файлу
+2. **Regexp** — проверяет точный формат найденных потенциальных секретов
+3. **Энтропия** — отсеивает тестовые данные и примеры
+4. **Экспорт** — результаты сохраняются в указанные файлы (JSON и/или TXT)
 
-Уровни опасности
-Уровень	Описание
-HIGH	Критические секреты (доступ к деньгам/серверам)
-MEDIUM	API ключи, вебхуки
-LOW	Тестовые данные, локальные ключи
-NO_THREAT	Публичные ключи, примеры
-Пример работы
-bash
-$ go run main.go -target ./test-project
+---
 
-Found 3 issues:
+## Структура проекта
 
-HIGH [AWS Access Key]
-   Файл: .env:15
-   Найдено: "AKIAIOSFODNN7EXAMPLE"
-   Контекст: aws_access_key_id=AKIAIOSFODNN7EXAMPLE
-
-MEDIUM [Google Maps Key]
-   Файл: config.js:23
-   Найдено: "AIzaSyDf09dEeR9cK7l7o0X8v9yW0q1r2s3t4u5v6"
-   Контекст: ?key=AIzaSyDf09dEeR9cK7l7o0X8v9yW0q1r2s3t4u5v6
-
-LOW [Stripe Test Key]
-   Файл: tests/test.js:42
-   Найдено: "какой то ключ гит не пропускает пушить с ним"
-   Контекст: stripe_key = "какой то ключ гит не пропускает пушить с ним"
-
-STATISTICS BY LEVEL:
-    HIGH: 1
-    MEDIUM: 1
-    LOW: 1
-    NO_THREAT: 0
-────────────────────────────────────────
-Duration: 25.5ms
-
-📄 JSON отчёт сохранён: reports/scan_result.json
-📄 Текстовый отчёт сохранён: txt/scan_20240307_150405.txt
-Форматы вывода
-JSON (для разработчиков)
-json
-{
-  "timestamp": "2024-03-07 15:04:05",
-  "total_issues": 2,
-  "findings": [
-    {
-      "level": "HIGH",
-      "line": 15,
-      "file_path": ".env",
-      "pattern_name": "AWS Access Key",
-      "match": "AKIAIOSFODNN7EXAMPLE",
-      "context": "aws_access_key_id=AKIAIOSFODNN7EXAMPLE"
-    }
-  ]
-}
-TXT (читаемый формат)
-================================================================
-SECRET SCANNER REPORT — 2026-03-07 21:30:46
-================================================================
-
-Summary: 51 potential leaks found
-   HIGH: 0
-   MEDIUM: 0
-   LOW: 15
-
-----------------------------------------------------------------
-
-[1] [NO_THREAT] AWS Access Key ID
-    File: README.md:61
-    Match: "AKIAIOSFODNN7EXAMPLE"
-    Context:    Найдено: "AKIAIOSFODNN7EXAMPLE"
-    ----------------------------------------------------------------
-
-[2] [NO_THREAT] Stripe Test Key
-    File: README.md:71
-    Match: "какой то ключ гит не пропускает пушить с ним"
-    Context:    Найдено: "какой то ключ гит не пропускает пушить с ним"
-    ----------------------------------------------------------------
-
-Как это работает
-Ахо-Корасик — находит все ключевые слова за один проход по файлу
-
-Regexp — проверяет точный формат найденных потенциальных секретов
-
-Энтропия — отсеивает тестовые данные и примеры
-
-Экспорт — результаты сохраняются в двух форматах:
-
-reports/ — JSON для дальнейшей обработки
-
-txt/ — читаемые отчёты для просмотра
-
-Структура проекта
-text
-secret-scanner/
-├── main.go                    # точка входа
+Scanner/
+├── secret_scanner.go          # точка входа
 ├── internal/
 │   └── scanner/
 │       ├── finding.go        # структура результата
@@ -157,6 +82,17 @@ secret-scanner/
 │       ├── patterns_medium.go # MEDIUM паттерны
 │       ├── patterns_low.go    # LOW паттерны
 │       └── scanner.go         # ядро с Ахо-Корасик
-├── reports/                   # JSON отчёты для разработчиков
-└── txt/                       # Текстовые отчёты
+├── reports/                   # JSON отчёты (опционально)
+└── txt/                       # текстовые отчёты (опционально)
 
+---
+
+## Параметры командной строки
+
+| Флаг | Описание | Пример |
+|------|----------|--------|
+| -target | Путь для сканирования | -target ./project |
+| -level | Фильтр по уровню (HIGH/MEDIUM/LOW/all) | -level HIGH |
+| -exclude | Исключенные папки через запятую | -exclude ".git,node_modules" |
+| -json | Путь к файлу для JSON отчёта | -json report.json |
+| -output | Путь к файлу для текстового отчёта | -output txt/report.txt |
