@@ -1,6 +1,4 @@
 package scanner
-<<<<<<< HEAD
-=======
 
 var MediumPatterns = []*Pattern{
 	// Slack Webhook
@@ -145,8 +143,7 @@ var MediumPatterns = []*Pattern{
 		"(?:JWT|ACCESS)_TOKEN\\s*[:=]\\s*[\"']?eyJ[A-Za-z0-9_-]{10,}\\.[A-Za-z0-9_-]{10,}\\.[A-Za-z0-9_-]{10,}",
 	),
 	MustNewPattern("telegram-user-token", "Telegram User Token", LevelMedium,
-    []string{"tg", "telegram"},
-    "[0-9]{8,10}:[A-Za-z0-9_-]{35}",
-),
+		[]string{"tg", "telegram"},
+		"[0-9]{8,10}:[A-Za-z0-9_-]{35}",
+	),
 }
->>>>>>> d368b1247ac28049a0fc6d8be74855a50d3f7e85
