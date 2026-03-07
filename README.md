@@ -73,17 +73,21 @@ go run secret_scanner.go
 ## Структура проекта
 
 Scanner/
-├── secret_scanner.go          # точка входа
+│
+├── secret_scanner.go              # точка входа
+│
 ├── internal/
 │   └── scanner/
-│       ├── finding.go        # структура результата
-│       ├── pattern.go        # шаблоны секретов
-│       ├── patterns_high.go   # HIGH паттерны
-│       ├── patterns_medium.go # MEDIUM паттерны
-│       ├── patterns_low.go    # LOW паттерны
-│       └── scanner.go         # ядро с Ахо-Корасик
-├── reports/                   # JSON отчёты (опционально)
-└── txt/                       # текстовые отчёты (опционально)
+│       ├── finding.go             # структура результата
+│       ├── pattern.go              # шаблоны секретов
+│       ├── patterns_high.go        # HIGH паттерны
+│       ├── patterns_medium.go      # MEDIUM паттерны
+│       ├── patterns_low.go         # LOW паттерны
+│       └── scanner.go              # ядро с Ахо-Корасик
+│
+├── reports/                        # JSON отчёты (опционально)
+│
+└── txt/                            # текстовые отчёты (опционально)
 
 ---
 
@@ -96,3 +100,4 @@ Scanner/
 | -exclude | Исключенные папки через запятую | -exclude ".git,node_modules" |
 | -json | Путь к файлу для JSON отчёта | -json report.json |
 | -output | Путь к файлу для текстового отчёта | -output txt/report.txt |
+
